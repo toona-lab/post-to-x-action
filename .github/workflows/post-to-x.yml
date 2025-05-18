@@ -1,0 +1,38 @@
+name: Post to X
+
+on:
+  push:
+    paths:
+      - 'posts/**.md'
+
+jobs:
+  tweet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Find latest post file
+        id: find_post
+        run: |
+          FILE=$(git log -1 --name-only --pretty=format: | grep '^posts/.*\.md$' | tail -n 1)
+          echo "POST_FILE=$FILE"
+          echo "POST_FILE=$FILE" >> $GITHUB_ENV
+
+      - name: Post to X
+        run: node post-to-x.js
+        env:
+          POST_FILE: ${{ env.POST_FILE }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_KEY_SECRET: ${{ secrets.X_API_KEY_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
