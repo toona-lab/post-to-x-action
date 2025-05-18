@@ -1,6 +1,11 @@
 import fs from 'fs';
 import twitterApiPkg from 'twitter-api-v2';
 const { TwitterApi } = twitterApiPkg;
+import dotenv from 'dotenv';
+
+if (process.env.GITHUB_ACTIONS !== 'true') {
+    dotenv.config();
+  }
 
 const {
   X_API_KEY,
