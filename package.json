@@ -1,5 +1,5 @@
 {
-    "name": "post-to-x",
+    "name": "post-to-x-action",
     "type": "module",
     "dependencies": {
         "dotenv": "^16.5.0",
